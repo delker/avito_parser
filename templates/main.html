@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{#    <meta http-equiv="Cache-Control" content="no-cache">#}
+    <meta charset="UTF-8">
+    <title>Парсинг АВИТО</title>
+</head>
+<body>
+<div style="margin: auto; width: 70%">
+<form action="{% url 'main' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Парсить">
+</form>
+    <br/>
+    <a href="{% url 'main' %}">СБРОСИТЬ</a>
+</div>
+<div style="margin-bottom: 5em">
+    <table style="width: 70%; margin: auto; margin-top: 5em">
+        <tr>
+            <th style="border: 1px solid grey;">фото</th>
+            <th style="border: 1px solid grey;">название</th>
+            <th style="border: 1px solid grey;">цена</th>
+            <th style="border: 1px solid grey;">ссылка</th>
+        </tr>
+        {% for res in results %}
+        {% if res.price <= max_price %}
+        <tr>
+            <td style="border: 1px solid grey; text-align: center"><img src="{{ res.img }}" alt="{{ res.title }}"></td>
+            <td style="border: 1px solid grey; text-align: center">{{ res.title }}</td>
+            {% if res.price < max_price %}
+            <td style="border: 1px solid grey; text-align: center; color: red">{{ res.price }}</td>
+            {% else %}
+            <td style="border: 1px solid grey; text-align: center">{{ res.price }}</td>
+            {% endif %}
+            <td style="border: 1px solid grey; text-align: center"><a href="{{ res.href }}" target="_blank">{{ res.href }}</a></td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
